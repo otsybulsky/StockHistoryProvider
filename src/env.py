@@ -10,7 +10,8 @@ def load_variable(variable_name):
 
 
 SOME_SECRET = load_variable("SOME_SECRET")
-FLAT_DATA_FOLDER = load_variable("FLAT_DATA_FOLDER")
+FLAT_DAILY_DATA_FOLDER = load_variable("FLAT_DAILY_DATA_FOLDER")
+DAILY_HISTORY_FOLDER = load_variable("DAILY_HISTORY_FOLDER")
 
 if __name__ == "__main__":
     logger.info("Environment variables:")
