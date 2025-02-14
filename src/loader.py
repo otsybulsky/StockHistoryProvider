@@ -75,41 +75,5 @@ def convert_daily_history_csv_to_parquet():
             assert len(group) == 1
 
 
-@log_execution_time
-def read_daily_history(symbol, start_date, end_date):
-    start_year = int(start_date.split("-")[0])
-    end_year = int(end_date.split("-")[0])
-
-    timestamp_start_sec = pd.to_datetime(start_date).timestamp()
-    timestamp_start_ns = int(timestamp_start_sec * 1e9)
-
-    timestamp_end_sec = pd.to_datetime(end_date).timestamp()
-    timestamp_end_ns = int(timestamp_end_sec * 1e9)
-
-    files = [
-        os.path.join(DAILY_HISTORY_FOLDER, f"{year}-D.parquet")
-        for year in range(start_year, end_year + 1)
-        if os.path.exists(os.path.join(DAILY_HISTORY_FOLDER, f"{year}-D.parquet"))
-    ]
-
-    if not files:
-        print(pd.DataFrame())
-        return pd.DataFrame()
-
-    filter_expr = (
-        (ds.field("ticker") == symbol)
-        & (ds.field("window_start") >= timestamp_start_ns)
-        & (ds.field("window_start") < timestamp_end_ns)
-    )
-
-    dataset = ds.dataset(files, format="parquet")
-    table = dataset.to_table(filter=filter_expr)
-    df = table.to_pandas()
-
-    print(df)
-    return df
-
-
-if __name__ == "__main__":
-    # convert_daily_history_csv_to_parquet()
-    read_daily_history("AAL", "2020-01-01", "2025-01-01")
+# if __name__ == "__main__":
+# convert_daily_history_csv_to_parquet()
